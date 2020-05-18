@@ -1,20 +1,18 @@
-name: Check process
-on: push
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-    ci-jobs:
-        mane: my jobs
-        runs-on: ubuntu-latest
-        steps:
-        - name: run code 
-          run: npm install
-          env:
-            MY_VAR: Hi there! My name is
-            FIRST_NAME: Mona
-            MIDDLE_NAME: The
-            LAST_NAME: Octocat
-        - name: show message
-            run: |
-            echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
-          
-    
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag optimysaservice:$(date +%s)
